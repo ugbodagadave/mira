@@ -107,13 +107,13 @@ async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAU
     await check_price_alerts()
 
 
-application = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
+def create_app() -> Application:
+    """Creates and configures the Telegram bot application."""
+    application = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
 
-# on different commands - answer in Telegram
-application.add_handler(CommandHandler("start", start))
+    # Add handlers
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+    application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
 
-# on non command i.e message - echo the message on Telegram
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-
-# Add scheduler webhook handler
-application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
+    return application
