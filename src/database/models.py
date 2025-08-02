@@ -2,6 +2,7 @@ from sqlalchemy import (
     create_engine,
     Column,
     Integer,
+    BigInteger,
     String,
     Float,
     Boolean,
@@ -16,7 +17,7 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    telegram_user_id = Column(Integer, unique=True, nullable=False)
+    telegram_user_id = Column(BigInteger, unique=True, nullable=False)
     first_name = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     

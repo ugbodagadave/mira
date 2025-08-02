@@ -53,3 +53,18 @@ async def test_create_price_alert(db_manager: DatabaseManager):
     assert alert.user_id == user.id
     assert alert.collection_name == "Doodles"
     assert alert.direction == "below"
+
+
+@pytest.mark.asyncio
+async def test_get_or_create_user_large_id(db_manager: DatabaseManager):
+    """Test creating a user with a large Telegram ID that requires BigInteger."""
+    # Arrange
+    large_telegram_id = 8428946127  # This ID caused the original error
+
+    # Act
+    user = await db_manager.get_or_create_user(large_telegram_id, "BigIDUser")
+
+    # Assert
+    assert user.telegram_user_id == large_telegram_id
+    assert user.first_name == "BigIDUser"
+    assert user.id is not None
