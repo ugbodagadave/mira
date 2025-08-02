@@ -3,17 +3,9 @@ import os
 from src.bot import create_app
 from src.config import config
 
-async def health(_: object) -> tuple[int, bytes]:
-    """A simple health check endpoint that returns a 200 OK response."""
-    return 200, b"OK"
-
-
 async def main() -> None:
     """Set up and run the bot with a webhook."""
     application = create_app()
-
-    # Add the health check endpoint
-    application.add_handlers([(("/health", ["GET"]), health)])
 
     # Render provides the port to listen on via the PORT environment variable
     port = int(os.environ.get("PORT", 8443))
