@@ -19,4 +19,4 @@ COPY src/ /app/src
 # Command to run the application
 # We use gunicorn for a production-ready server.
 # The bot will be run as a web application to handle webhooks from Telegram.
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.bot:application"]
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.main:asgi_app"]
