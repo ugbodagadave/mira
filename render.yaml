@@ -3,7 +3,7 @@ services:
     name: mira-bot
     runtime: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r requirements.txt && python -m src.database.init_db"
     startCommand: "python -m src.main"
     envVars:
       - key: TELEGRAM_BOT_TOKEN
