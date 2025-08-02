@@ -108,7 +108,7 @@ async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAU
         return
 
     logger.info("Scheduler webhook called, checking alerts...")
-    await check_price_alerts()
+    await check_price_alerts(context.application)
 
 
 def create_app() -> Application:
