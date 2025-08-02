@@ -46,4 +46,9 @@ class DatabaseManager:
 
 # Use a placeholder for the DB URL if it's not set (for testing)
 db_url = config.DATABASE_URL or "sqlite+aiosqlite:///:memory:"
+
+# Ensure the postgresql driver is async
+if db_url.startswith("postgresql://"):
+    db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
 db_manager = DatabaseManager(db_url)
