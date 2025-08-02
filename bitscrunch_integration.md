@@ -8,7 +8,14 @@ The UnleashNFTs API is the primary data source for all NFT and blockchain-relate
 
 ## 2. Authentication
 
-All requests to the UnleashNFTs API are authenticated using a Bearer Token. The API key is stored securely as an environment variable (`BITCRUNCH_API_KEY`) and is never hardcoded in the application. The service module automatically includes the authorization header in every request.
+All requests to the UnleashNFTs API are authenticated using an API key sent in the request headers. The API key is stored securely as an environment variable (`BITCRUNCH_API_KEY`) and is never hardcoded. The service module automatically includes the following headers in every request:
+
+```python
+headers = {
+    "accept": "application/json",
+    "x-api-key": "your_api_key_here"
+}
+```
 
 ## 3. Implemented Services
 
@@ -19,6 +26,9 @@ The following UnleashNFTs API endpoints have been integrated into Mira:
 -   **Endpoint:** `GET /api/v1/collection/{blockchain}/{address}/metrics`
 -   **Purpose:** This endpoint is used to fetch real-time metrics for a specific NFT collection, such as floor price, trading volume, and holder counts.
 -   **Mira's Usage:** This is the primary endpoint used for the **Project Summary** feature. The data retrieved is passed to the Gemini AI service to generate a concise summary. It is also used by the **Scheduler** to check the current floor price for active alerts.
+-   **Key Implementation Details:**
+    -   The `{blockchain}` path parameter must be the integer **chain ID** (e.g., `1` for Ethereum), not a string name.
+    -   The request requires at least one metric to be specified in the `metrics` query parameter (e.g., `?metrics=volume`).
 
 ### 3.2. Collection NFTs
 
