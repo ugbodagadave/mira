@@ -8,6 +8,7 @@ google-generativeai
 sqlalchemy
 asyncpg
 aiosqlite
+psycopg2-binary
 
 # Testing
 pytest
