@@ -2,11 +2,11 @@
 
 ## Current Focus
 - **Phase 7: New Feature Implementation (Placeholders)**
-- **Current Task**: Implement placeholder functionality for the new features outlined in `new_features_plan.md`. The first feature, "New Listing Alerts," has been implemented as a placeholder.
+- **Current Task**: Implement placeholder functionality for the new features outlined in `new_features_plan.md`. The "New Listing Alerts" and "Wallet Activity Monitoring" features have been implemented as placeholders.
 
 ## Next Steps
-1.  Implement the "Wallet Activity Monitoring" feature as a placeholder.
-2.  Implement the "Market Trend Analysis" feature as a placeholder.
+1.  Implement the "Market Trend Analysis" feature as a placeholder.
+2.  Once all placeholders are in, begin full implementation of the features.
 3.  Once all placeholders are in, begin full implementation of the features.
 
 ## Active Decisions

@@ -101,6 +101,19 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await db_manager.create_new_listing_alert(user, alert_data)
         await update.message.reply_text(f"✅ Alert set! I'll notify you when there are new listings for {collection_name}.")
 
+    elif intent == 'track_wallet':
+        wallet_address = entities.get('wallet_address')
+
+        if not wallet_address:
+            await update.message.reply_text("I'm sorry, I couldn't identify the wallet address. Please try again.")
+            return
+
+        await db_manager.create_tracked_wallet(user, wallet_address)
+        await update.message.reply_text(f"✅ Wallet tracking enabled! I'll monitor {wallet_address} for NFT activity.")
+
+    elif intent == 'get_market_trends':
+        await update.message.reply_text("Here is a summary of the current market trends...")
+
     elif intent == 'greeting':
         await start(update, context)
 

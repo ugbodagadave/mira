@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.future import select
 
 from src.config import config
-from src.database.models import Base, User, PriceAlert, NewListingAlert
+from src.database.models import Base, User, PriceAlert, NewListingAlert, TrackedWallet
 
 class DatabaseManager:
     def __init__(self, db_url: str):
@@ -56,6 +56,17 @@ class DatabaseManager:
             await session.commit()
             await session.refresh(alert)
             return alert
+
+    async def create_tracked_wallet(self, user: User, wallet_address: str) -> TrackedWallet:
+        async with self.async_session() as session:
+            wallet = TrackedWallet(
+                user_id=user.id,
+                wallet_address=wallet_address,
+            )
+            session.add(wallet)
+            await session.commit()
+            await session.refresh(wallet)
+            return wallet
 
 # Use a placeholder for the DB URL if it's not set (for testing)
 db_url = config.DATABASE_URL or "sqlite+aiosqlite:///:memory:"

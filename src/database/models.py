@@ -23,6 +23,17 @@ class User(Base):
     
     price_alerts = relationship("PriceAlert", back_populates="user")
     new_listing_alerts = relationship("NewListingAlert", back_populates="user")
+    tracked_wallets = relationship("TrackedWallet", back_populates="user")
+
+class TrackedWallet(Base):
+    __tablename__ = "tracked_wallets"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    wallet_address = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="tracked_wallets")
 
 class NewListingAlert(Base):
     __tablename__ = "new_listing_alerts"

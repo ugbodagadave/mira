@@ -227,3 +227,75 @@ async def test_handle_message_new_listing_alert_intent(mock_classify_intent, moc
     mock_create_new_listing_alert.assert_called_once()
     
     update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you when there are new listings for cryptopunks.")
+
+
+@pytest.mark.asyncio
+@patch('src.bot.db_manager.create_tracked_wallet')
+@patch('src.bot.db_manager.get_or_create_user')
+@patch('src.bot.classify_intent_and_extract_entities')
+async def test_handle_message_track_wallet_intent(mock_classify_intent, mock_get_or_create_user, mock_create_tracked_wallet):
+    """Test the full flow for a 'track_wallet' intent."""
+    # Arrange
+    user_input = "track 0x123abc"
+    wallet_address = "0x123abc"
+    nlu_response = {
+        "intent": "track_wallet",
+        "entities": {
+            "wallet_address": wallet_address
+        },
+        "confidence": 0.99
+    }
+    mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
+    mock_create_tracked_wallet.return_value = None
+
+    update = MagicMock(spec=Update)
+    update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
+    update.message = AsyncMock()
+    update.message.text = user_input
+    update.message.reply_text = AsyncMock()
+
+    context = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
+
+    # Act
+    await handle_message(update, context)
+
+    # Assert
+    mock_classify_intent.assert_called_once_with(user_input)
+    mock_get_or_create_user.assert_called_once()
+    mock_create_tracked_wallet.assert_called_once_with(mock_get_or_create_user.return_value, wallet_address)
+    
+    update.message.reply_text.assert_called_with(f"✅ Wallet tracking enabled! I'll monitor {wallet_address} for NFT activity.")
+
+
+@pytest.mark.asyncio
+@patch('src.bot.db_manager.get_or_create_user')
+@patch('src.bot.classify_intent_and_extract_entities')
+async def test_handle_message_market_trends_intent(mock_classify_intent, mock_get_or_create_user):
+    """Test the full flow for a 'get_market_trends' intent."""
+    # Arrange
+    user_input = "what are the market trends"
+    nlu_response = {
+        "intent": "get_market_trends",
+        "entities": {},
+        "confidence": 0.92
+    }
+    mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
+
+    update = MagicMock(spec=Update)
+    update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
+    update.message = AsyncMock()
+    update.message.text = user_input
+    update.message.reply_text = AsyncMock()
+
+    context = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
+
+    # Act
+    await handle_message(update, context)
+
+    # Assert
+    mock_classify_intent.assert_called_once_with(user_input)
+    mock_get_or_create_user.assert_called_once()
+    
+    update.message.reply_text.assert_called_with("Here is a summary of the current market trends...")
