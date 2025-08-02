@@ -48,8 +48,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         
         # This is a simplification. A real implementation would need to resolve the
         # collection name to an address and blockchain. For now, we'll assume a direct match.
-        # We will use a placeholder address for now.
-        collection_address = "0xbd49448e92423253930b3310a5563539a68e643e" # Doodles
+        # We will use the correct address for Doodles for now.
+        collection_address = "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e" # Doodles
         blockchain = "ethereum"
 
         await update.message.reply_text(f"Fetching summary for {collection_name}...")
