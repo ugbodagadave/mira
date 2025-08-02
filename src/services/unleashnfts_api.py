@@ -6,7 +6,10 @@ BASE_URL = "https://api.unleashnfts.com/api/v1"
 class UnleashNFTsService:
     def __init__(self):
         self.api_key = config.BITCRUNCH_API_KEY
-        self.headers = {"Authorization": f"Bearer {self.api_key}"}
+        self.headers = {
+            "accept": "application/json",
+            "x-api-key": self.api_key
+        }
 
     async def _request(self, method: str, endpoint: str, params: dict = None):
         """Helper function to make requests to the API."""
