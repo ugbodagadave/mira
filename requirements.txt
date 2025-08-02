@@ -1,0 +1,11 @@
+# Core Dependencies
+python-telegram-bot[ext]
+httpx
+google-generativeai
+sqlalchemy
+asyncpg
+
+# Testing
+pytest
+pytest-asyncio
+respx

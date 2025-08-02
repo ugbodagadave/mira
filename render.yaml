@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: mira-bot
+    env: docker
+    plan: free
+    healthCheckPath: /health # To be implemented
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: BITCRUNCH_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mira-db
+          property: connectionString
+
+  - type: cron
+    name: mira-scheduler
+    env: docker
+    plan: free
+    schedule: "*/5 * * * *" # Every 5 minutes
+    command: "python scheduler.py"
+
+databases:
+  - name: mira-db
+    databaseName: mira
+    user: mira_user
+    plan: free
