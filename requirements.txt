@@ -1,4 +1,6 @@
 # Core Dependencies
+gunicorn
+uvicorn
 python-dotenv
 python-telegram-bot[ext]
 httpx

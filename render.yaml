@@ -21,7 +21,7 @@ services:
     env: docker
     plan: free
     schedule: "*/5 * * * *" # Every 5 minutes
-    command: "python scheduler.py"
+    command: "python src/scheduler.py"
 
 databases:
   - name: mira-db

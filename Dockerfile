@@ -14,4 +14,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ .
 
 # Command to run the application
-CMD ["python", "bot.py"]
+# We use gunicorn for a production-ready server.
+# The bot will be run as a web application to handle webhooks from Telegram.
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.bot:application"]
