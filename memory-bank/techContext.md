@@ -8,7 +8,9 @@
 - **AI Models**:
     - **NLU & Summarization**: Google Gemini 2.5 Pro (`gemini-2.5-pro`)
     - **Alert Processing**: Google Gemini 2.5 Flash (`gemini-2.5-flash`)
-- **Data Source**: BitCrunch API (v1)
+- **Data Source**: UnleashNFTs API (v1) - formerly BitCrunch
+    - **Base URL**: `https://api.unleashnfts.com/api/v1/`
+    - **Image Detection URL**: `https://api-cdv.unleashnfts.com/api/v1/`
 - **Database**: PostgreSQL
 - **ORM**: SQLAlchemy with `asyncpg` driver.
 - **Hosting**: Render (Free Plan)

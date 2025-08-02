@@ -7,7 +7,9 @@
 ## What Works
 - The project directory structure has been created.
 - The initial `README.md` has been created.
-- The core Memory Bank documents (`projectbrief.md`, `productContext.md`, `techContext.md`, `systemPatterns.md`, `activeContext.md`) have been initialized.
+- The core Memory Bank documents have been initialized.
+- The bot connects to Telegram and responds to a `/start` command.
+- Unit tests are in place and passing for the core bot functionality.
 
 ## What's Left to Build
 - Everything. The core application logic, API integrations, database setup, and features are yet to be implemented.

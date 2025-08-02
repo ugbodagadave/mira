@@ -10,8 +10,8 @@ graph TD
     C -->|User Input| D[NLU Processor (nlu/processor.py)]
     D -->|Intent & Entities| C
     C -->|Routes to Handler| E[Feature Handlers]
-    E -->|Request Data| F[BitCrunch Service (services/bitcrunch_api.py)]
-    F --> G(BitCrunch API)
+    E -->|Request Data| F[UnleashNFTs Service (services/unleashnfts_api.py)]
+    F --> G(UnleashNFTs API)
     E -->|Request AI Task| H[Gemini Service (services/gemini_ai.py)]
     H --> I(Google Gemini API)
     E -->|CRUD Operations| J[Database Manager (database/manager.py)]
@@ -28,7 +28,7 @@ graph TD
 ## 2. Design Patterns
 
 ### 2.1. Service Layer
-External integrations (BitCrunch, Gemini) are abstracted into their own service modules. This decouples the core business logic from the specific implementation details of the APIs, making it easier to manage, test, and potentially swap out services in the future.
+External integrations (UnleashNFTs, Gemini) are abstracted into their own service modules. This decouples the core business logic from the specific implementation details of the APIs, making it easier to manage, test, and potentially swap out services in the future.
 
 ### 2.2. Natural Language Understanding (NLU) Pipeline
 1.  **Input**: Raw text from the user.

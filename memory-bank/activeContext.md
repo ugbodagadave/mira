@@ -1,13 +1,12 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 0: Project Initialization & Scaffolding**
-- **Current Task**: 0.1 - Setting up the project structure and initial documentation.
+- **Phase 1: Core Bot & NLU Integration**
+- **Current Task**: 1.1 - Basic Telegram Bot with `/start` command.
 
 ## Next Steps
-1.  Create remaining placeholder files (`.gitignore`, `requirements.txt`, etc.).
-2.  Initialize the Git repository.
-3.  Move to Task 0.2: Credential & Configuration Setup.
+1.  Commit the new `bot.py` and `test_bot.py` files.
+2.  Move to Task 1.2: NLU Intent Classification.
 
 ## Active Decisions
 - The directory structure is confirmed as per the development plan.
