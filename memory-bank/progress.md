@@ -1,8 +1,8 @@
 # Project Progress: Mira AI Agent
 
 ## Current Status
-- **Overall Progress**: 10%
-- **Current Phase**: Phase 5: Documentation Update
+- **Overall Progress**: 15%
+- **Current Phase**: Phase 7: New Feature Implementation (Placeholders)
 
 ## What Works
 - The project directory structure has been created.
@@ -15,6 +15,7 @@
 - Database models and manager for users and price alerts are implemented.
 - The price alert setting feature is implemented and integrated.
 - The scheduler for checking price alerts is implemented and tested.
+- **Placeholder for "New Listing Alerts" feature is implemented and tested.**
 - Unit tests are in place and passing for all implemented functionality.
 - **The application is successfully deployed and live on Render's native Python runtime.**
 

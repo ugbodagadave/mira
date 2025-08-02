@@ -189,3 +189,41 @@ async def test_handle_message_greeting_intent(mock_classify_intent, mock_get_or_
     call_args = update.message.reply_html.call_args[0][0]
     assert "Hi Test!" in call_args
     assert "I'm Mira, your personal AI agent for NFTs." in call_args
+
+
+@pytest.mark.asyncio
+@patch('src.bot.db_manager.create_new_listing_alert')
+@patch('src.bot.db_manager.get_or_create_user')
+@patch('src.bot.classify_intent_and_extract_entities')
+async def test_handle_message_new_listing_alert_intent(mock_classify_intent, mock_get_or_create_user, mock_create_new_listing_alert):
+    """Test the full flow for a 'set_new_listing_alert' intent."""
+    # Arrange
+    user_input = "alert me for new cryptopunks listings"
+    nlu_response = {
+        "intent": "set_new_listing_alert",
+        "entities": {
+            "collection_name": "cryptopunks"
+        },
+        "confidence": 0.95
+    }
+    mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
+    mock_create_new_listing_alert.return_value = None
+
+    update = MagicMock(spec=Update)
+    update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
+    update.message = AsyncMock()
+    update.message.text = user_input
+    update.message.reply_text = AsyncMock()
+
+    context = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
+
+    # Act
+    await handle_message(update, context)
+
+    # Assert
+    mock_classify_intent.assert_called_once_with(user_input)
+    mock_get_or_create_user.assert_called_once()
+    mock_create_new_listing_alert.assert_called_once()
+    
+    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you when there are new listings for cryptopunks.")

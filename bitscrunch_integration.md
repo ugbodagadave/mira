@@ -48,6 +48,30 @@ The following UnleashNFTs API endpoints have been integrated into Mira:
 -   **Purpose:** This endpoint provides high-level data about the overall NFT market trends.
 -   **Mira's Usage:** This endpoint is used for the **Market Trend Analysis** feature, providing the data needed for the Gemini AI to generate a market summary.
 
+### 3.5. Wallet Profile
+
+-   **Endpoint:** `GET /api/v1/wallet/{address}/profile`
+-   **Purpose:** This endpoint retrieves general profile information for a specific wallet address.
+-   **Mira's Usage:** This endpoint will be used in conjunction with the **Wallet Activity Monitoring** feature to provide more context about the wallet being tracked.
+
+### 3.6. Wallet Metrics
+
+-   **Endpoint:** `GET /api/v1/wallet/{address}/metrics`
+-   **Purpose:** This endpoint retrieves metrics related to a specific wallet's activity.
+-   **Mira's Usage:** This endpoint will be used in conjunction with the **Wallet Activity Monitoring** feature to provide more context about the wallet being tracked.
+
+### 3.7. Market Metrics
+
+-   **Endpoint:** `GET /api/v1/market/metrics`
+-   **Purpose:** This endpoint provides high-level data about the overall NFT market metrics.
+-   **Mira's Usage:** This endpoint is used for the **Market Trend Analysis** feature, providing the data needed for the Gemini AI to generate a market summary.
+
+### 3.8. Collections
+
+-   **Endpoint:** `GET /api/v1/collections`
+-   **Purpose:** This endpoint provides a list of top collections by various metrics.
+-   **Mira's Usage:** This endpoint is used for the **Market Trend Analysis** feature, providing the data needed for the Gemini AI to generate a market summary.
+
 ## 4. Error Handling
 
 The `unleashnfts_api.py` service includes robust error handling for all API requests. It automatically handles:

@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.future import select
 
 from src.config import config
-from src.database.models import Base, User, PriceAlert
+from src.database.models import Base, User, PriceAlert, NewListingAlert
 
 class DatabaseManager:
     def __init__(self, db_url: str):
@@ -38,6 +38,19 @@ class DatabaseManager:
                 chain=alert_data['chain'],
                 threshold_price=alert_data['threshold_price'],
                 direction=alert_data['direction'],
+            )
+            session.add(alert)
+            await session.commit()
+            await session.refresh(alert)
+            return alert
+
+    async def create_new_listing_alert(self, user: User, alert_data: dict) -> NewListingAlert:
+        async with self.async_session() as session:
+            alert = NewListingAlert(
+                user_id=user.id,
+                collection_name=alert_data['collection_name'],
+                collection_address=alert_data['collection_address'],
+                chain=alert_data['chain'],
             )
             session.add(alert)
             await session.commit()

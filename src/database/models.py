@@ -21,7 +21,20 @@ class User(Base):
     first_name = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
-    alerts = relationship("PriceAlert", back_populates="user")
+    price_alerts = relationship("PriceAlert", back_populates="user")
+    new_listing_alerts = relationship("NewListingAlert", back_populates="user")
+
+class NewListingAlert(Base):
+    __tablename__ = "new_listing_alerts"
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    collection_name = Column(String, nullable=False)
+    collection_address = Column(String, nullable=False)
+    chain = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="new_listing_alerts")
 
 class PriceAlert(Base):
     __tablename__ = "price_alerts"
@@ -35,4 +48,4 @@ class PriceAlert(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    user = relationship("User", back_populates="alerts")
+    user = relationship("User", back_populates="price_alerts")

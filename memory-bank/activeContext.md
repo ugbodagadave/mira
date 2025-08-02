@@ -1,12 +1,13 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 6: Awaiting Next Feature Development**
-- **Current Task**: The bot is now stable and deployed. All documentation has been updated to reflect the successful native Python deployment on Render.
+- **Phase 7: New Feature Implementation (Placeholders)**
+- **Current Task**: Implement placeholder functionality for the new features outlined in `new_features_plan.md`. The first feature, "New Listing Alerts," has been implemented as a placeholder.
 
 ## Next Steps
-1.  Plan the next feature implementation (e.g., full implementation of price alerts, wallet tracking).
-2.  Begin development on the next feature.
+1.  Implement the "Wallet Activity Monitoring" feature as a placeholder.
+2.  Implement the "Market Trend Analysis" feature as a placeholder.
+3.  Once all placeholders are in, begin full implementation of the features.
 
 ## Active Decisions
 - **Deployment Strategy**: The project has officially moved away from a Docker-based deployment. The new standard is a native Python runtime on Render, managed by a `render.yaml` file. This decision was made after significant deployment challenges with the Docker/Gunicorn approach.

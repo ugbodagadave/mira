@@ -85,6 +85,22 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await db_manager.create_price_alert(user, alert_data)
         await update.message.reply_text(f"✅ Alert set! I'll notify you if {collection_name} goes {direction} {threshold_price} ETH.")
 
+    elif intent == 'set_new_listing_alert':
+        collection_name = entities.get('collection_name')
+
+        if not collection_name:
+            await update.message.reply_text("I'm sorry, I couldn't identify the collection name. Please try again.")
+            return
+
+        alert_data = {
+            "collection_name": collection_name,
+            "collection_address": "0x456",  # Placeholder
+            "chain": "ethereum",  # Placeholder
+        }
+
+        await db_manager.create_new_listing_alert(user, alert_data)
+        await update.message.reply_text(f"✅ Alert set! I'll notify you when there are new listings for {collection_name}.")
+
     elif intent == 'greeting':
         await start(update, context)
 
