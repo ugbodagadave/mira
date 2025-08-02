@@ -10,6 +10,7 @@
 - The core Memory Bank documents have been initialized.
 - The bot connects to Telegram and responds to a `/start` command.
 - The bot is integrated with the NLU processor to classify user intent.
+- A robust service layer for interacting with the UnleashNFTs API has been implemented.
 - Unit tests are in place and passing for all implemented functionality.
 
 ## What's Left to Build

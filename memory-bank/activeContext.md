@@ -1,13 +1,14 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 1: Core Bot & NLU Integration**
-- **Current Task**: 1.2 - NLU Intent Classification.
+- **Phase 2: API Integrations**
+- **Current Task**: 2.1 - Implement UnleashNFTs API Service.
 
 ## Next Steps
-1.  Commit the new `nlu/processor.py` and updated `bot.py` and test files.
-2.  Push the initial project structure and NLU integration to the remote GitHub repository.
-3.  Move to Phase 2, Task 2.1: UnleashNFTs API Service, using the Task Manager MCP.
+1.  Commit the new `services/unleashnfts_api.py` and its corresponding test file.
+2.  Mark Task `task-34` as complete in the Task Manager.
+3.  Request user approval for the completed task.
+4.  Retrieve the next task from the Task Manager.
 
 ## Active Decisions
 - The directory structure is confirmed as per the development plan.
