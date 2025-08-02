@@ -1,4 +1,5 @@
 # Core Dependencies
+python-dotenv
 python-telegram-bot[ext]
 httpx
 google-generativeai
