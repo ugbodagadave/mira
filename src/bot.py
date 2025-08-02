@@ -4,6 +4,8 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 
 from src.config import config
 from src.nlu.processor import classify_intent_and_extract_entities
+from src.services.unleashnfts_api import unleash_nfts_service
+from src.services.gemini_ai import gemini_service
 
 # Enable logging
 logging.basicConfig(
@@ -29,14 +31,40 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     user_input = update.message.text
     nlu_result = await classify_intent_and_extract_entities(user_input)
     
-    # For now, we'll just reply with the NLU result for debugging.
-    # In the future, this will have routing logic based on the intent.
-    response_text = (
-        f"Intent: {nlu_result.get('intent')}\n"
-        f"Entities: {nlu_result.get('entities')}\n"
-        f"Confidence: {nlu_result.get('confidence')}"
-    )
-    await update.message.reply_text(response_text)
+    intent = nlu_result.get('intent')
+    entities = nlu_result.get('entities', {})
+
+    if intent == 'get_project_summary':
+        collection_name = entities.get('collection_name')
+        if not collection_name:
+            await update.message.reply_text("I'm sorry, I couldn't identify the collection name. Please try again.")
+            return
+        
+        # This is a simplification. A real implementation would need to resolve the
+        # collection name to an address and blockchain. For now, we'll assume a direct match.
+        # We will use a placeholder address for now.
+        collection_address = "0xbd49448e92423253930b3310a5563539a68e643e" # Doodles
+        blockchain = "ethereum"
+
+        await update.message.reply_text(f"Fetching summary for {collection_name}...")
+
+        collection_data = await unleash_nfts_service.get_collection_metrics(blockchain, collection_address)
+        
+        if not collection_data:
+            await update.message.reply_text("I'm sorry, I couldn't retrieve data for that collection.")
+            return
+
+        summary = await gemini_service.generate_summary(collection_data)
+        await update.message.reply_text(summary)
+
+    else:
+        # Fallback for other intents
+        response_text = (
+            f"Intent: {intent}\n"
+            f"Entities: {entities}\n"
+            f"Confidence: {nlu_result.get('confidence')}"
+        )
+        await update.message.reply_text(response_text)
 
 
 def main() -> None:
