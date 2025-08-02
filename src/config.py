@@ -12,15 +12,17 @@ class Config:
     BITCRUNCH_API_KEY = os.getenv("BITCRUNCH_API_KEY")
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DATABASE_URL = os.getenv("DATABASE_URL")
+    SCHEDULER_SECRET = os.getenv("SCHEDULER_SECRET")
 
     # Basic validation to ensure keys are set
-    if not all([TELEGRAM_BOT_TOKEN, BITCRUNCH_API_KEY, GEMINI_API_KEY, DATABASE_URL]):
+    if not all([TELEGRAM_BOT_TOKEN, BITCRUNCH_API_KEY, GEMINI_API_KEY, DATABASE_URL, SCHEDULER_SECRET]):
         missing = [
             k for k, v in {
                 "TELEGRAM_BOT_TOKEN": TELEGRAM_BOT_TOKEN,
                 "BITCRUNCH_API_KEY": BITCRUNCH_API_KEY,
                 "GEMINI_API_KEY": GEMINI_API_KEY,
-                "DATABASE_URL": DATABASE_URL
+                "DATABASE_URL": DATABASE_URL,
+                "SCHEDULER_SECRET": SCHEDULER_SECRET
             }.items() if not v
         ]
         # In a real app, you'd raise an exception or log a fatal error.

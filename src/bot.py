@@ -7,6 +7,7 @@ from src.nlu.processor import classify_intent_and_extract_entities
 from src.services.unleashnfts_api import unleash_nfts_service
 from src.services.gemini_ai import gemini_service
 from src.database.manager import db_manager
+from src.scheduler import check_price_alerts
 
 # Enable logging
 logging.basicConfig(
@@ -103,9 +104,25 @@ def main() -> None:
     # on non command i.e message - echo the message on Telegram
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
+    # Add scheduler webhook handler
+    application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
+
     # Run the bot until the user presses Ctrl-C
     logger.info("Starting bot...")
     application.run_polling()
+
+
+async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Handles the scheduler webhook call."""
+    # A simple secret key check for security
+    # In a real app, you might use a more robust method
+    secret = context.args[0] if context.args else None
+    if secret != config.SCHEDULER_SECRET:
+        logger.warning("Unauthorized scheduler call attempt.")
+        return
+
+    logger.info("Scheduler webhook called, checking alerts...")
+    await check_price_alerts()
 
 
 if __name__ == "__main__":

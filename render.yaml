@@ -16,12 +16,7 @@ services:
           name: mira-db
           property: connectionString
 
-  - type: cron
-    name: mira-scheduler
-    env: docker
-    plan: free
-    dockerfilePath: ./Dockerfile.scheduler
-    schedule: "*/5 * * * *" # Every 5 minutes
+>>>>>>>
 
 databases:
   - name: mira-db

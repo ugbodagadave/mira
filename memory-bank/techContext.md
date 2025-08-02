@@ -22,6 +22,7 @@ The application requires the following environment variables to be set in the ho
 - `BITCRUNCH_API_KEY`: The API key for the BitCrunch service.
 - `GEMINI_API_KEY`: The API key for Google AI Studio / Vertex AI.
 - `DATABASE_URL`: The connection string for the PostgreSQL database.
+- `SCHEDULER_SECRET`: A secret key to authenticate calls to the scheduler webhook.
 
 ## 3. Technical Constraints
 - **Render Free Plan Limits**: The application must be optimized for low resource consumption (CPU, RAM). The free tier also has limitations on background workers and cron job frequency.
