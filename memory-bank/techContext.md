@@ -13,8 +13,7 @@
     - **Image Detection URL**: `https://api-cdv.unleashnfts.com/api/v1/`
 - **Database**: PostgreSQL
 - **ORM**: SQLAlchemy with `asyncpg` driver.
-- **Hosting**: Render (Free Plan)
-- **Containerization**: Docker
+- **Hosting**: Render (Free Plan) using a native Python runtime.
 
 ## 2. Environment Variables
 The application requires the following environment variables to be set in the hosting environment (e.g., Render secrets):
@@ -23,8 +22,9 @@ The application requires the following environment variables to be set in the ho
 - `GEMINI_API_KEY`: The API key for Google AI Studio / Vertex AI.
 - `DATABASE_URL`: The connection string for the PostgreSQL database.
 - `SCHEDULER_SECRET`: A secret key to authenticate calls to the scheduler webhook.
+- `WEBHOOK_URL`: The public URL of the Render web service (e.g., `https://your-app.onrender.com`).
 
 ## 3. Technical Constraints
-- **Render Free Plan Limits**: The application must be optimized for low resource consumption (CPU, RAM). The free tier also has limitations on background workers and cron job frequency.
+- **Render Free Plan Limits**: The application must be optimized for low resource consumption (CPU, RAM). The free tier does not support native cron jobs, requiring a webhook-based approach for scheduled tasks.
 - **Stateless Design**: To work reliably on Render, the application should be as stateless as possible. Persistent data must be stored in the PostgreSQL database.
 - **API Rate Limits**: All API interactions (BitCrunch, Gemini, Telegram) must be designed to handle potential rate limits gracefully.

@@ -1,8 +1,8 @@
 # Project Progress: Mira AI Agent
 
 ## Current Status
-- **Overall Progress**: 5%
-- **Current Phase**: Phase 0: Project Initialization & Scaffolding
+- **Overall Progress**: 10%
+- **Current Phase**: Phase 5: Documentation Update
 
 ## What Works
 - The project directory structure has been created.
@@ -16,9 +16,12 @@
 - The price alert setting feature is implemented and integrated.
 - The scheduler for checking price alerts is implemented and tested.
 - Unit tests are in place and passing for all implemented functionality.
+- **The application is successfully deployed and live on Render's native Python runtime.**
 
 ## What's Left to Build
-- Everything. The core application logic, API integrations, database setup, and features are yet to be implemented.
+- The majority of the core application logic and user-facing features still need to be implemented.
+- The current features are placeholders and need to be connected to real data (e.g., resolving collection names to addresses).
 
 ## Known Issues
-- None at this stage.
+- The initial deployment was challenging. The original Docker-based approach with a Gunicorn server was incompatible with the `python-telegram-bot` library, leading to a series of `AttributeError` and `RuntimeError` issues.
+- **Resolution**: The project was refactored to use a native Python runtime on Render. The Docker dependency was removed, and the application now runs using the bot library's built-in webhook server. This has proven to be a stable and successful deployment strategy.

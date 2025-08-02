@@ -18,11 +18,7 @@ graph TD
     J --> K[(PostgreSQL on Render)]
     C -->|Send Response| B
 
-    L[Scheduler (scheduler.py)] -->|Triggers Job| M{Cron Job Runner}
-    M --> J
-    M --> F
-    M --> H
-    M -->|Sends Alert| B
+    L[External Cron Service] -->|Calls Webhook| C
 ```
 
 ## 2. Design Patterns

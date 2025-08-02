@@ -1,15 +1,14 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 4: Implement Scheduler and Deploy to Render**
-- **Current Task**: Implement Scheduler.
+- **Phase 5: Documentation Update**
+- **Current Task**: Update all project documentation to reflect the new native Python deployment architecture.
 
 ## Next Steps
-1.  Commit the new `scheduler.py` and its corresponding test file.
-2.  Finalize the `render.yaml` and `Dockerfile` configurations.
-3.  Mark Task `task-36` as complete in the Task Manager.
-4.  Request user approval for the completed task.
+1.  Update `memory-bank/progress.md`.
+2.  Update `how_it_works.md`.
+3.  Commit all documentation changes.
 
 ## Active Decisions
-- The directory structure is confirmed as per the development plan.
-- Core documentation in the Memory Bank is being created now to establish a baseline.
+- **Deployment Strategy**: The project has officially moved away from a Docker-based deployment. The new standard is a native Python runtime on Render, managed by a `render.yaml` file. This decision was made after significant deployment challenges with the Docker/Gunicorn approach.
+- **Scheduler**: The scheduler is implemented via a webhook called by an external cron service, due to the limitations of Render's free tier.
