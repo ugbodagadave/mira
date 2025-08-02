@@ -3,6 +3,7 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 
 from src.config import config
+from src.nlu.processor import classify_intent_and_extract_entities
 
 # Enable logging
 logging.basicConfig(
@@ -24,10 +25,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Handles all non-command messages."""
-    # For now, we'll just echo the message back.
-    # In the future, this will route to the NLU processor.
-    await update.message.reply_text(f"Echo: {update.message.text}")
+    """Handles all non-command messages by routing them through the NLU processor."""
+    user_input = update.message.text
+    nlu_result = await classify_intent_and_extract_entities(user_input)
+    
+    # For now, we'll just reply with the NLU result for debugging.
+    # In the future, this will have routing logic based on the intent.
+    response_text = (
+        f"Intent: {nlu_result.get('intent')}\n"
+        f"Entities: {nlu_result.get('entities')}\n"
+        f"Confidence: {nlu_result.get('confidence')}"
+    )
+    await update.message.reply_text(response_text)
 
 
 def main() -> None:

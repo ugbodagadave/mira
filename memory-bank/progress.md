@@ -9,7 +9,8 @@
 - The initial `README.md` has been created.
 - The core Memory Bank documents have been initialized.
 - The bot connects to Telegram and responds to a `/start` command.
-- Unit tests are in place and passing for the core bot functionality.
+- The bot is integrated with the NLU processor to classify user intent.
+- Unit tests are in place and passing for all implemented functionality.
 
 ## What's Left to Build
 - Everything. The core application logic, API integrations, database setup, and features are yet to be implemented.
