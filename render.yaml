@@ -1,9 +1,11 @@
 services:
   - type: web
     name: mira-bot
-    env: docker
+    runtime: python
     plan: free
-    healthCheckPath: /health # To be implemented
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python -m src.main"
+    healthCheckPath: /health
     envVars:
       - key: TELEGRAM_BOT_TOKEN
         sync: false
@@ -15,6 +17,10 @@ services:
         fromDatabase:
           name: mira-db
           property: connectionString
+      - key: SCHEDULER_SECRET
+        sync: false
+      - key: WEBHOOK_URL
+        sync: false
 
 databases:
   - name: mira-db

@@ -13,16 +13,18 @@ class Config:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     DATABASE_URL = os.getenv("DATABASE_URL")
     SCHEDULER_SECRET = os.getenv("SCHEDULER_SECRET")
+    WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
     # Basic validation to ensure keys are set
-    if not all([TELEGRAM_BOT_TOKEN, BITCRUNCH_API_KEY, GEMINI_API_KEY, DATABASE_URL, SCHEDULER_SECRET]):
+    if not all([TELEGRAM_BOT_TOKEN, BITCRUNCH_API_KEY, GEMINI_API_KEY, DATABASE_URL, SCHEDULER_SECRET, WEBHOOK_URL]):
         missing = [
             k for k, v in {
                 "TELEGRAM_BOT_TOKEN": TELEGRAM_BOT_TOKEN,
                 "BITCRUNCH_API_KEY": BITCRUNCH_API_KEY,
                 "GEMINI_API_KEY": GEMINI_API_KEY,
                 "DATABASE_URL": DATABASE_URL,
-                "SCHEDULER_SECRET": SCHEDULER_SECRET
+                "SCHEDULER_SECRET": SCHEDULER_SECRET,
+                "WEBHOOK_URL": WEBHOOK_URL
             }.items() if not v
         ]
         # In a real app, you'd raise an exception or log a fatal error.
