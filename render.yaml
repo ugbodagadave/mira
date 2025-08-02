@@ -16,8 +16,6 @@ services:
           name: mira-db
           property: connectionString
 
->>>>>>>
-
 databases:
   - name: mira-db
     databaseName: mira
