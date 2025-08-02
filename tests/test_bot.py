@@ -147,3 +147,45 @@ async def test_handle_message_fallback(mock_classify_intent, mock_get_or_create_
     update.message.reply_text.assert_called_once()
     call_args = update.message.reply_text.call_args[0][0]
     assert "Intent: unknown" in call_args
+
+
+@pytest.mark.asyncio
+@patch('src.bot.db_manager.get_or_create_user')
+@patch('src.bot.classify_intent_and_extract_entities')
+async def test_handle_message_greeting_intent(mock_classify_intent, mock_get_or_create_user):
+    """Test that the 'greeting' intent triggers the start message."""
+    # Arrange
+    user_input = "hello"
+    nlu_response = {
+        "intent": "greeting",
+        "entities": {},
+        "confidence": 0.99
+    }
+    mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
+
+    update = MagicMock(spec=Update)
+    
+    # Create a mock user object with the required attributes
+    mock_user = MagicMock(spec=TelegramUser)
+    mock_user.id = 123
+    mock_user.first_name = "Test"
+    mock_user.is_bot = False
+    mock_user.mention_html.return_value = "Test"
+    
+    update.effective_user = mock_user
+    update.message = AsyncMock()
+    update.message.text = user_input
+    update.message.reply_html = AsyncMock()
+
+    context = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
+
+    # Act
+    await handle_message(update, context)
+
+    # Assert
+    mock_classify_intent.assert_called_once_with(user_input)
+    update.message.reply_html.assert_called_once()
+    call_args = update.message.reply_html.call_args[0][0]
+    assert "Hi Test!" in call_args
+    assert "I'm Mira, your personal AI agent for NFTs." in call_args

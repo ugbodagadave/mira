@@ -85,6 +85,9 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await db_manager.create_price_alert(user, alert_data)
         await update.message.reply_text(f"✅ Alert set! I'll notify you if {collection_name} goes {direction} {threshold_price} ETH.")
 
+    elif intent == 'greeting':
+        await start(update, context)
+
     else:
         # Fallback for other intents
         response_text = (
