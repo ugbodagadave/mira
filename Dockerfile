@@ -14,9 +14,9 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application's code into the container at /app
-COPY src/ .
+COPY src/ /app/src
 
 # Command to run the application
 # We use gunicorn for a production-ready server.
 # The bot will be run as a web application to handle webhooks from Telegram.
-CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "bot:application"]
+CMD ["gunicorn", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "src.bot:application"]
