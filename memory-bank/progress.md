@@ -12,6 +12,8 @@
 - The bot is integrated with the NLU processor to classify user intent.
 - A robust service layer for interacting with the UnleashNFTs API has been implemented.
 - The project summary generation feature is implemented and integrated.
+- Database models and manager for users and price alerts are implemented.
+- The price alert setting feature is implemented and integrated.
 - Unit tests are in place and passing for all implemented functionality.
 
 ## What's Left to Build

@@ -6,6 +6,7 @@ from src.config import config
 from src.nlu.processor import classify_intent_and_extract_entities
 from src.services.unleashnfts_api import unleash_nfts_service
 from src.services.gemini_ai import gemini_service
+from src.database.manager import db_manager
 
 # Enable logging
 logging.basicConfig(
@@ -33,6 +34,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     
     intent = nlu_result.get('intent')
     entities = nlu_result.get('entities', {})
+    user = await db_manager.get_or_create_user(
+        telegram_user_id=update.effective_user.id,
+        first_name=update.effective_user.first_name
+    )
 
     if intent == 'get_project_summary':
         collection_name = entities.get('collection_name')
@@ -56,6 +61,27 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
         summary = await gemini_service.generate_summary(collection_data)
         await update.message.reply_text(summary)
+
+    elif intent == 'set_price_alert':
+        collection_name = entities.get('collection_name')
+        threshold_price = entities.get('threshold_price')
+        direction = entities.get('direction')
+
+        if not all([collection_name, threshold_price, direction]):
+            await update.message.reply_text("I'm missing some details for the alert. Please specify the collection, price, and direction (above/below).")
+            return
+            
+        # Placeholder for collection address and chain
+        alert_data = {
+            "collection_name": collection_name,
+            "collection_address": "0x123", # Placeholder
+            "chain": "ethereum", # Placeholder
+            "threshold_price": threshold_price,
+            "direction": direction
+        }
+        
+        await db_manager.create_price_alert(user, alert_data)
+        await update.message.reply_text(f"✅ Alert set! I'll notify you if {collection_name} goes {direction} {threshold_price} ETH.")
 
     else:
         # Fallback for other intents

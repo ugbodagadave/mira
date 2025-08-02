@@ -2,16 +2,17 @@ import pytest
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from telegram import Update, User
+from telegram import Update, User as TelegramUser
 from telegram.ext import ContextTypes
 
 from src.bot import start, handle_message
+from src.database.models import User
 
 @pytest.mark.asyncio
 async def test_start_command():
     """Test the /start command handler."""
     # Mock user
-    user = User(id=123, first_name="Test", is_bot=False)
+    user = TelegramUser(id=123, first_name="Test", is_bot=False)
     
     # Mock update
     update = MagicMock(spec=Update)
@@ -35,10 +36,52 @@ async def test_start_command():
 
 
 @pytest.mark.asyncio
+@patch('src.bot.db_manager.create_price_alert')
+@patch('src.bot.db_manager.get_or_create_user')
+@patch('src.bot.classify_intent_and_extract_entities')
+async def test_handle_message_price_alert_intent(mock_classify_intent, mock_get_or_create_user, mock_create_price_alert):
+    """Test the full flow for a 'set_price_alert' intent."""
+    # Arrange
+    user_input = "alert me if doodles drops below 10 eth"
+    nlu_response = {
+        "intent": "set_price_alert",
+        "entities": {
+            "collection_name": "doodles",
+            "threshold_price": 10,
+            "direction": "below"
+        },
+        "confidence": 0.98
+    }
+    mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
+    mock_create_price_alert.return_value = None # We don't need the return value
+
+    update = MagicMock(spec=Update)
+    update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
+    update.message = AsyncMock()
+    update.message.text = user_input
+    update.message.reply_text = AsyncMock()
+
+    context = MagicMock(spec=ContextTypes.DEFAULT_TYPE)
+
+    # Act
+    await handle_message(update, context)
+
+    # Assert
+    mock_classify_intent.assert_called_once_with(user_input)
+    mock_get_or_create_user.assert_called_once()
+    mock_create_price_alert.assert_called_once()
+    
+    # Check that the confirmation message is sent
+    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you if doodles goes below 10 ETH.")
+
+
+@pytest.mark.asyncio
 @patch('src.bot.gemini_service.generate_summary')
 @patch('src.bot.unleash_nfts_service.get_collection_metrics')
+@patch('src.bot.db_manager.get_or_create_user')
 @patch('src.bot.classify_intent_and_extract_entities')
-async def test_handle_message_summary_intent(mock_classify_intent, mock_get_metrics, mock_generate_summary):
+async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_create_user, mock_get_metrics, mock_generate_summary):
     """Test the full flow for a 'get_project_summary' intent."""
     # Arrange
     user_input = "summarize doodles"
@@ -74,8 +117,9 @@ async def test_handle_message_summary_intent(mock_classify_intent, mock_get_metr
 
 
 @pytest.mark.asyncio
+@patch('src.bot.db_manager.get_or_create_user')
 @patch('src.bot.classify_intent_and_extract_entities')
-async def test_handle_message_fallback(mock_classify_intent):
+async def test_handle_message_fallback(mock_classify_intent, mock_get_or_create_user):
     """Test the fallback for unhandled intents."""
     # Arrange
     user_input = "some user message"
@@ -85,8 +129,10 @@ async def test_handle_message_fallback(mock_classify_intent):
         "confidence": 0.5
     }
     mock_classify_intent.return_value = nlu_response
+    mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
 
     update = MagicMock(spec=Update)
+    update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
     update.message = AsyncMock()
     update.message.text = user_input
     update.message.reply_text = AsyncMock()
