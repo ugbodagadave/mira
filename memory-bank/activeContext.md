@@ -1,14 +1,14 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 3: Implement Core Features (Summaries & Alerts)**
-- **Current Task**: Price Alert Feature.
+- **Phase 4: Implement Scheduler and Deploy to Render**
+- **Current Task**: Implement Scheduler.
 
 ## Next Steps
-1.  Commit the new database models, manager, and updated bot and test files.
-2.  Mark Task `task-35` as complete in the Task Manager.
-3.  Request user approval for the completed task.
-4.  Retrieve the next task from the Task Manager.
+1.  Commit the new `scheduler.py` and its corresponding test file.
+2.  Finalize the `render.yaml` and `Dockerfile` configurations.
+3.  Mark Task `task-36` as complete in the Task Manager.
+4.  Request user approval for the completed task.
 
 ## Active Decisions
 - The directory structure is confirmed as per the development plan.

@@ -14,6 +14,7 @@
 - The project summary generation feature is implemented and integrated.
 - Database models and manager for users and price alerts are implemented.
 - The price alert setting feature is implemented and integrated.
+- The scheduler for checking price alerts is implemented and tested.
 - Unit tests are in place and passing for all implemented functionality.
 
 ## What's Left to Build
