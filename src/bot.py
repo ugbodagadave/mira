@@ -94,22 +94,16 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await update.message.reply_text(response_text)
 
 
-def main() -> None:
-    """Start the bot."""
-    application = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
+application = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
 
-    # on different commands - answer in Telegram
-    application.add_handler(CommandHandler("start", start))
+# on different commands - answer in Telegram
+application.add_handler(CommandHandler("start", start))
 
-    # on non command i.e message - echo the message on Telegram
-    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+# on non command i.e message - echo the message on Telegram
+application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    # Add scheduler webhook handler
-    application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
-
-    # Run the bot until the user presses Ctrl-C
-    logger.info("Starting bot...")
-    application.run_polling()
+# Add scheduler webhook handler
+application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
 
 
 async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -125,5 +119,4 @@ async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAU
     await check_price_alerts()
 
 
-if __name__ == "__main__":
-    main()
+>>>>>>>
