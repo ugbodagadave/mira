@@ -30,7 +30,9 @@ class UnleashNFTsService:
     async def get_collection_metrics(self, blockchain: str, address: str):
         """Get metrics for a specific collection."""
         endpoint = f"/collection/{blockchain}/{address}/metrics"
-        return await self._request("GET", endpoint)
+        # The 'metrics' parameter is required by the API.
+        params = {"metrics": "volume"}
+        return await self._request("GET", endpoint, params=params)
 
     async def get_collection_nfts(self, blockchain: str, address: str, limit: int = 50):
         """Get NFTs for a specific collection."""

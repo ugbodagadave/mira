@@ -13,7 +13,7 @@ async def test_get_collection_metrics_success():
     address = "0xbd49448e92423253930b3310a5563539a68e643e"
     mock_response = {"floor_price": 1.23}
     
-    respx.get(f"{BASE_URL}/collection/{blockchain}/{address}/metrics").mock(
+    respx.get(f"{BASE_URL}/collection/{blockchain}/{address}/metrics", params={"metrics": "volume"}).mock(
         return_value=Response(200, json=mock_response)
     )
 
@@ -31,7 +31,7 @@ async def test_get_collection_metrics_failure():
     blockchain = "ethereum"
     address = "0xbd49448e92423253930b3310a5563539a68e643e"
     
-    respx.get(f"{BASE_URL}/collection/{blockchain}/{address}/metrics").mock(
+    respx.get(f"{BASE_URL}/collection/{blockchain}/{address}/metrics", params={"metrics": "volume"}).mock(
         return_value=Response(404)
     )
 
