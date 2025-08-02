@@ -22,7 +22,7 @@ async def main() -> None:
     # 2. Set the webhook
     port = int(os.environ.get("PORT", 8443))
     webhook_url = f"{config.WEBHOOK_URL}/{config.TELEGRAM_BOT_TOKEN}"
-    await application.bot.set_webhook(url=webhook_url, allowed_updates=application.updater.get_effective_update_types())
+    await application.bot.set_webhook(url=webhook_url, allowed_updates=application.update_types)
 
     # 3. Start the application and the webhook server
     # We use the lower-level, non-blocking start_webhook method.
