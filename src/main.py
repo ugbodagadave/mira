@@ -30,6 +30,7 @@ async def main() -> None:
     await application.updater.start_webhook(
         listen="0.0.0.0",
         port=port,
+        url_path=config.TELEGRAM_BOT_TOKEN,
         webhook_url=webhook_url,
     )
 
