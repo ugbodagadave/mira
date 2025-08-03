@@ -50,8 +50,8 @@ async def test_search_collection_success():
     collection_name = "doodles"
     mock_response = {
         "collections": [
-            {"name": "CryptoDoodles", "address": "0x456", "blockchain": "ethereum"},
-            {"name": "Doodles", "address": "0x123", "blockchain": "ethereum"},
+            {"metadata": {"name": "CryptoDoodles", "contract_address": "0x456", "chain_id": 1}},
+            {"metadata": {"name": "Doodles", "contract_address": "0x123", "chain_id": 1}},
         ]
     }
     
@@ -71,8 +71,8 @@ async def test_search_collection_success():
 
     # Assert
     assert result is not None
-    assert result["name"] == "Doodles"
-    assert result["address"] == "0x123"
+    assert result["metadata"]["name"] == "Doodles"
+    assert result["metadata"]["contract_address"] == "0x123"
 
 @pytest.mark.asyncio
 @respx.mock

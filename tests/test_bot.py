@@ -92,7 +92,7 @@ async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_c
         "entities": {"collection_name": collection_name},
         "confidence": 0.9
     }
-    search_response = {"name": "Doodles", "address": "0x123", "blockchain": "ethereum"}
+    search_response = {"metadata": {"name": "Doodles", "contract_address": "0x123", "chain_id": 1}}
     metrics_response = {"stats": {"floor_price": 1.2}}
     summary_response = "This is the summary for Doodles."
 
@@ -114,7 +114,7 @@ async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_c
     # Assert
     mock_classify_intent.assert_called_once_with(user_input)
     mock_search_collection.assert_called_once_with(collection_name)
-    mock_get_metrics.assert_called_once_with(search_response["blockchain"], search_response["address"])
+    mock_get_metrics.assert_called_once_with(search_response["metadata"]["chain_id"], search_response["metadata"]["contract_address"])
     mock_generate_summary.assert_called_once_with(metrics_response)
     
     # Check that the final summary is sent

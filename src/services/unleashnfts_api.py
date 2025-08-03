@@ -74,12 +74,12 @@ class UnleashNFTsService:
 
         # Find the best match by looking for an exact name match first
         for collection in collections_data["collections"]:
-            if name.lower() == collection.get("name", "").lower():
+            if name.lower() == collection.get("metadata", {}).get("name", "").lower():
                 return collection
 
         # If no exact match is found, look for a partial match
         for collection in collections_data["collections"]:
-            if name.lower() in collection.get("name", "").lower():
+            if name.lower() in collection.get("metadata", {}).get("name", "").lower():
                 return collection
 
         return None

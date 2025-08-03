@@ -53,10 +53,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
             await update.message.reply_text(f"I couldn't find a collection named {collection_name}. Please try another name.")
             return
 
-        collection_address = collection["address"]
-        blockchain = collection["blockchain"]
+        collection_address = collection["metadata"]["contract_address"]
+        blockchain = collection["metadata"]["chain_id"]
         
-        await update.message.reply_text(f"Fetching summary for {collection['name']}...")
+        await update.message.reply_text(f"Fetching summary for {collection['metadata']['name']}...")
 
         collection_data = await unleash_nfts_service.get_collection_metrics(blockchain, collection_address)
         

@@ -56,7 +56,7 @@ async def test_e2e_summary_and_alert_flow(
         "intent": "get_project_summary",
         "entities": {"collection_name": "cryptopunks"}
     }
-    mock_search_collection.return_value = {"name": "CryptoPunks", "address": "0x123", "blockchain": "ethereum"}
+    mock_search_collection.return_value = {"metadata": {"name": "CryptoPunks", "contract_address": "0x123", "chain_id": 1}}
     mock_get_metrics.return_value = {"stats": {"floor_price": 50}}
     mock_generate_summary.return_value = "This is a summary for CryptoPunks."
 

@@ -1,8 +1,8 @@
 # Active Context: Mira AI Agent
 
 ## Current Focus
-- **Phase 7: New Feature Implementation (Placeholders)**
-- **Current Task**: All placeholder functionalities for the new features outlined in `new_features_plan.md` have been implemented.
+- **Phase 8: Full Feature Implementation**
+- **Current Task**: The "Project Summary" feature has been fully implemented with dynamic collection name resolution.
 
 ## Next Steps
 1.  Begin full implementation of the "New Listing Alerts" feature.
