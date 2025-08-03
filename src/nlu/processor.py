@@ -73,7 +73,15 @@ async def classify_intent_and_extract_entities(user_input: str) -> dict:
     """
     
     try:
+        print("--- NLU Prompt ---")
+        print(prompt)
+        print("--------------------")
         response = await model.generate_content_async(prompt)
+        
+        print("--- NLU Raw Response ---")
+        print(response.text)
+        print("------------------------")
+
         # The response from Gemini might be wrapped in markdown, so we clean it.
         cleaned_json = response.text.strip().replace("```json", "").replace("```", "").strip()
         result = json.loads(cleaned_json)
