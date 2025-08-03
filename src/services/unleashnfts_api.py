@@ -59,29 +59,13 @@ class UnleashNFTsService:
 
     async def search_collection(self, name: str, limit: int = 100, max_pages: int = 20):
         """
-        Search for a collection by name. First, try a direct name search.
-        If that fails, paginate through collections to find a match.
+        Search for a collection by name across multiple pages and return the best match.
         """
         endpoint = "/collections"
-        
-        # --- Attempt 1: Direct search by name (assuming API supports it) ---
-        params_by_name = {
-            "blockchain": 1,
-            "name": name
-        }
-        named_search_data = await self._request("GET", endpoint, params=params_by_name)
-        if named_search_data and named_search_data.get("collections"):
-            # The API might return multiple partial matches, find the best one
-            for collection in named_search_data["collections"]:
-                if name.lower() == collection.get("metadata", {}).get("name", "").lower():
-                    return collection # Return exact match immediately
-            return named_search_data["collections"][0] # Return the first result as best guess
-
-        # --- Attempt 2: Paginate and search if direct search fails ---
         for page in range(max_pages):
             offset = page * limit
-            params_paginate = {
-                "blockchain": 1,
+            params = {
+                "blockchain": 1,  # Default to Ethereum
                 "metrics": "volume",
                 "sort_by": "volume",
                 "sort_order": "desc",
@@ -89,11 +73,18 @@ class UnleashNFTsService:
                 "limit": limit,
                 "offset": offset
             }
-            collections_data = await self._request("GET", endpoint, params=params_paginate)
+            collections_data = await self._request("GET", endpoint, params=params)
 
             if not collections_data or not collections_data.get("collections"):
+                # Stop if there are no more collections
                 break
 
+            # First pass: Look for an exact match
+            for collection in collections_data["collections"]:
+                if name.lower() == collection.get("metadata", {}).get("name", "").lower():
+                    return collection
+            
+            # Second pass: Look for a partial match if no exact match was found on this page
             for collection in collections_data["collections"]:
                 if name.lower() in collection.get("metadata", {}).get("name", "").lower():
                     return collection

@@ -89,7 +89,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         alert_data = {
             "collection_name": collection['metadata']['name'],
             "collection_address": collection_address,
-            "chain": chain,
+            "chain": str(chain),
             "threshold_price": threshold_price,
             "direction": direction
         }
