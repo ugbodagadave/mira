@@ -40,3 +40,47 @@ async def test_get_collection_metrics_failure():
 
     # Assert
     assert result is None
+
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_search_collection_success():
+    """Test successful search for a collection."""
+    # Arrange
+    collection_name = "doodles"
+    mock_response = {
+        "collections": [
+            {"name": "Doodles", "address": "0x123", "blockchain": "ethereum", "metrics": {"volume_24h": 100}},
+            {"name": "CryptoDoodles", "address": "0x456", "blockchain": "ethereum", "metrics": {"volume_24h": 50}},
+        ]
+    }
+    
+    respx.get(f"{BASE_URL}/collections", params={"name": collection_name, "metrics": "volume_24h"}).mock(
+        return_value=Response(200, json=mock_response)
+    )
+
+    # Act
+    result = await unleash_nfts_service.search_collection(collection_name)
+
+    # Assert
+    assert result is not None
+    assert result["name"] == "Doodles"
+    assert result["address"] == "0x123"
+
+@pytest.mark.asyncio
+@respx.mock
+async def test_search_collection_not_found():
+    """Test search for a collection that does not exist."""
+    # Arrange
+    collection_name = "nonexistentcollection"
+    mock_response = {"collections": []}
+    
+    respx.get(f"{BASE_URL}/collections", params={"name": collection_name, "metrics": "volume_24h"}).mock(
+        return_value=Response(200, json=mock_response)
+    )
+
+    # Act
+    result = await unleash_nfts_service.search_collection(collection_name)
+
+    # Assert
+    assert result is None

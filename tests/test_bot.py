@@ -79,21 +79,25 @@ async def test_handle_message_price_alert_intent(mock_classify_intent, mock_get_
 @pytest.mark.asyncio
 @patch('src.bot.gemini_service.generate_summary')
 @patch('src.bot.unleash_nfts_service.get_collection_metrics')
+@patch('src.bot.unleash_nfts_service.search_collection')
 @patch('src.bot.db_manager.get_or_create_user')
 @patch('src.bot.classify_intent_and_extract_entities')
-async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_create_user, mock_get_metrics, mock_generate_summary):
+async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_create_user, mock_search_collection, mock_get_metrics, mock_generate_summary):
     """Test the full flow for a 'get_project_summary' intent."""
     # Arrange
     user_input = "summarize doodles"
+    collection_name = "doodles"
     nlu_response = {
         "intent": "get_project_summary",
-        "entities": {"collection_name": "doodles"},
+        "entities": {"collection_name": collection_name},
         "confidence": 0.9
     }
+    search_response = {"name": "Doodles", "address": "0x123", "blockchain": "ethereum"}
     metrics_response = {"stats": {"floor_price": 1.2}}
     summary_response = "This is the summary for Doodles."
 
     mock_classify_intent.return_value = nlu_response
+    mock_search_collection.return_value = search_response
     mock_get_metrics.return_value = metrics_response
     mock_generate_summary.return_value = summary_response
 
@@ -109,7 +113,8 @@ async def test_handle_message_summary_intent(mock_classify_intent, mock_get_or_c
 
     # Assert
     mock_classify_intent.assert_called_once_with(user_input)
-    mock_get_metrics.assert_called_once()
+    mock_search_collection.assert_called_once_with(collection_name)
+    mock_get_metrics.assert_called_once_with(search_response["blockchain"], search_response["address"])
     mock_generate_summary.assert_called_once_with(metrics_response)
     
     # Check that the final summary is sent

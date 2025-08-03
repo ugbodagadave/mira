@@ -51,5 +51,23 @@ class UnleashNFTsService:
         endpoint = "/market/trend"
         return await self._request("GET", endpoint)
 
+    async def search_collection(self, name: str):
+        """Search for a collection by name and return the best match."""
+        endpoint = "/collections"
+        params = {"name": name, "metrics": "volume_24h"}
+        collections_data = await self._request("GET", endpoint, params=params)
+
+        if not collections_data or not collections_data.get("collections"):
+            return None
+
+        # Find the best match based on 24h volume
+        best_match = max(
+            collections_data["collections"],
+            key=lambda c: c.get("metrics", {}).get("volume_24h", 0),
+            default=None,
+        )
+
+        return best_match
+
 # Instantiate the service
 unleash_nfts_service = UnleashNFTsService()

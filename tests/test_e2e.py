@@ -29,9 +29,11 @@ async def setup_database():
 @pytest.mark.asyncio
 @patch('src.bot.gemini_service.generate_summary')
 @patch('src.bot.unleash_nfts_service.get_collection_metrics')
+@patch('src.bot.unleash_nfts_service.search_collection')
 @patch('src.bot.classify_intent_and_extract_entities')
 async def test_e2e_summary_and_alert_flow(
     mock_classify_intent,
+    mock_search_collection,
     mock_get_metrics,
     mock_generate_summary
 ):
@@ -54,6 +56,7 @@ async def test_e2e_summary_and_alert_flow(
         "intent": "get_project_summary",
         "entities": {"collection_name": "cryptopunks"}
     }
+    mock_search_collection.return_value = {"name": "CryptoPunks", "address": "0x123", "blockchain": "ethereum"}
     mock_get_metrics.return_value = {"stats": {"floor_price": 50}}
     mock_generate_summary.return_value = "This is a summary for CryptoPunks."
 
@@ -62,6 +65,7 @@ async def test_e2e_summary_and_alert_flow(
 
     # Assert
     mock_classify_intent.assert_called_with(summary_input)
+    mock_search_collection.assert_called_once_with("cryptopunks")
     mock_get_metrics.assert_called_once()
     mock_generate_summary.assert_called_once()
     update.message.reply_text.assert_called_with("This is a summary for CryptoPunks.")

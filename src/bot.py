@@ -45,15 +45,18 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         if not collection_name:
             await update.message.reply_text("I'm sorry, I couldn't identify the collection name. Please try again.")
             return
-        
-        # This is a simplification. A real implementation would need to resolve the
-        # collection name to an address and blockchain. For now, we'll assume a direct match.
-        # We will use the correct address for Doodles for now.
-        # Convert to lowercase as a common API requirement.
-        collection_address = "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e".lower() # Doodles
-        blockchain = 1 # Use the integer ID for Ethereum
 
-        await update.message.reply_text(f"Fetching summary for {collection_name}...")
+        await update.message.reply_text(f"Searching for {collection_name}...")
+        collection = await unleash_nfts_service.search_collection(collection_name)
+
+        if not collection:
+            await update.message.reply_text(f"I couldn't find a collection named {collection_name}. Please try another name.")
+            return
+
+        collection_address = collection["address"]
+        blockchain = collection["blockchain"]
+        
+        await update.message.reply_text(f"Fetching summary for {collection['name']}...")
 
         collection_data = await unleash_nfts_service.get_collection_metrics(blockchain, collection_address)
         
