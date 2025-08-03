@@ -15,13 +15,19 @@ class UnleashNFTsService:
         """Helper function to make requests to the API."""
         async with httpx.AsyncClient() as client:
             try:
+                print(f"Making request to {BASE_URL}{endpoint} with params {params}")
                 response = await client.request(
                     method, f"{BASE_URL}{endpoint}", headers=self.headers, params=params
                 )
+                print(f"Response status code: {response.status_code}")
+                print(f"Response content: {response.text}")
                 response.raise_for_status()
                 return response.json()
             except httpx.HTTPStatusError as e:
                 print(f"HTTP error occurred: {e}")
+                return None
+            except httpx.RequestError as e:
+                print(f"An error occurred while requesting {e.request.url!r}.")
                 return None
             except httpx.RequestError as e:
                 print(f"An error occurred while requesting {e.request.url!r}.")
@@ -54,13 +60,19 @@ class UnleashNFTsService:
     async def search_collection(self, name: str):
         """Search for a collection by name and return the best match."""
         endpoint = "/collections"
-        params = {"name": name, "metrics": "volume_24h"}
+        params = {
+            "blockchain": 1,  # Default to Ethereum
+            "metrics": "volume_24h",
+            "sort_by": "volume_24h",
+            "sort_order": "desc",
+            "name": name.lower()
+        }
         collections_data = await self._request("GET", endpoint, params=params)
 
         if not collections_data or not collections_data.get("collections"):
             return None
 
-        # Find the best match based on 24h volume
+        # Find the best match based on 24h volume, just in case the name search is not exact
         best_match = max(
             collections_data["collections"],
             key=lambda c: c.get("metrics", {}).get("volume_24h", 0),
