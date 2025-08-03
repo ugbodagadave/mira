@@ -50,12 +50,19 @@ async def test_search_collection_success():
     collection_name = "doodles"
     mock_response = {
         "collections": [
-            {"name": "Doodles", "address": "0x123", "blockchain": "ethereum", "metrics": {"volume_24h": 100}},
-            {"name": "CryptoDoodles", "address": "0x456", "blockchain": "ethereum", "metrics": {"volume_24h": 50}},
+            {"name": "CryptoDoodles", "address": "0x456", "blockchain": "ethereum"},
+            {"name": "Doodles", "address": "0x123", "blockchain": "ethereum"},
         ]
     }
     
-    respx.get(f"{BASE_URL}/collections", params={"name": collection_name, "metrics": "volume_24h"}).mock(
+    params = {
+        "blockchain": 1,
+        "metrics": "volume",
+        "sort_by": "volume",
+        "sort_order": "desc",
+        "time_range": "24h"
+    }
+    respx.get(f"{BASE_URL}/collections", params=params).mock(
         return_value=Response(200, json=mock_response)
     )
 
@@ -75,7 +82,14 @@ async def test_search_collection_not_found():
     collection_name = "nonexistentcollection"
     mock_response = {"collections": []}
     
-    respx.get(f"{BASE_URL}/collections", params={"name": collection_name, "metrics": "volume_24h"}).mock(
+    params = {
+        "blockchain": 1,
+        "metrics": "volume",
+        "sort_by": "volume",
+        "sort_order": "desc",
+        "time_range": "24h"
+    }
+    respx.get(f"{BASE_URL}/collections", params=params).mock(
         return_value=Response(200, json=mock_response)
     )
 

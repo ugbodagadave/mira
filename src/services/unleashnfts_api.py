@@ -61,7 +61,7 @@ class UnleashNFTsService:
         """Search for a collection by name and return the best match."""
         endpoint = "/collections"
         params = {
-            "chain_id": 1,  # Default to Ethereum
+            "blockchain": 1,  # Default to Ethereum
             "metrics": "volume",
             "sort_by": "volume",
             "sort_order": "desc",
