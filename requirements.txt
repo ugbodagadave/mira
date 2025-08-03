@@ -9,6 +9,7 @@ sqlalchemy
 asyncpg
 aiosqlite
 psycopg2-binary
+aiohttp
 
 # Testing
 pytest

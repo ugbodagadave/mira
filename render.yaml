@@ -20,6 +20,8 @@ services:
         sync: false
       - key: WEBHOOK_URL
         sync: false
+      - key: SCHEDULER_PORT
+        value: 8080
 
 databases:
   - name: mira-db

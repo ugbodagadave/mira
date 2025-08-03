@@ -71,7 +71,7 @@ This project is configured for easy deployment on Render using the provided `ren
 
 Because Render's free tier does not support native cron jobs, a webhook is used to trigger the alert checker. You must use an external cron job service (like [Cron-Job.org](https://cron-job.org/)) to call this webhook periodically.
 
-1.  **Construct your Webhook URL:** The full URL for the cron job to call is: `https://<your-render-app-url>/scheduler/<your-scheduler-secret>`
+1.  **Construct your Webhook URL:** The full URL for the cron job to call is: `https://<your-render-app-url>:8080/scheduler/<your-scheduler-secret>`
 2.  **Configure the External Cron Job:**
     *   Go to a service like [Cron-Job.org](https://cron-job.org/).
     *   Create a new cron job.

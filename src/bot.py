@@ -139,19 +139,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         await update.message.reply_text(response_text)
 
 
-async def check_price_alerts_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Handles the scheduler webhook call."""
-    # A simple secret key check for security
-    # In a real app, you might use a more robust method
-    secret = context.args[0] if context.args else None
-    if secret != config.SCHEDULER_SECRET:
-        logger.warning("Unauthorized scheduler call attempt.")
-        return
-
-    logger.info("Scheduler webhook called, checking alerts...")
-    await check_price_alerts(context.application)
-
-
 def create_app() -> Application:
     """Creates and configures the Telegram bot application."""
     application = Application.builder().token(config.TELEGRAM_BOT_TOKEN).build()
@@ -159,6 +146,5 @@ def create_app() -> Application:
     # Add handlers
     application.add_handler(CommandHandler("start", start))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    application.add_handler(CommandHandler("scheduler", check_price_alerts_handler))
 
     return application
