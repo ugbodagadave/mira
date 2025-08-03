@@ -75,18 +75,27 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         if not all([collection_name, threshold_price, direction]):
             await update.message.reply_text("I'm missing some details for the alert. Please specify the collection, price, and direction (above/below).")
             return
-            
-        # Placeholder for collection address and chain
+
+        await update.message.reply_text(f"Searching for {collection_name}...")
+        collection = await unleash_nfts_service.search_collection(collection_name)
+
+        if not collection:
+            await update.message.reply_text(f"I couldn't find a collection named {collection_name}. Please try another name.")
+            return
+
+        collection_address = collection["metadata"]["contract_address"]
+        chain = collection["metadata"]["chain_id"]
+        
         alert_data = {
-            "collection_name": collection_name,
-            "collection_address": "0x123", # Placeholder
-            "chain": "ethereum", # Placeholder
+            "collection_name": collection['metadata']['name'],
+            "collection_address": collection_address,
+            "chain": chain,
             "threshold_price": threshold_price,
             "direction": direction
         }
         
         await db_manager.create_price_alert(user, alert_data)
-        await update.message.reply_text(f"✅ Alert set! I'll notify you if {collection_name} goes {direction} {threshold_price} ETH.")
+        await update.message.reply_text(f"✅ Alert set! I'll notify you if {collection['metadata']['name']} goes {direction} {threshold_price} ETH.")
 
     elif intent == 'set_new_listing_alert':
         collection_name = entities.get('collection_name')

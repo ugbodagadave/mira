@@ -19,8 +19,8 @@ Mira is built on a modular, asynchronous architecture designed for scalability a
 3.  The message is passed to the `classify_intent_and_extract_entities` function in the NLU processor.
 4.  The NLU processor sends a prompt to the Gemini 2.5 Pro model, which returns a JSON object containing the intent and entities.
 5.  The `handle_message` function uses the intent to route the request to the appropriate logic block (e.g., `if intent == 'get_project_summary'`).
-6.  **Dynamic Collection Search:** For a project summary, the bot first calls the `unleash_nfts_service.search_collection` function to find the best match for the user's query.
-7.  The handler then calls the necessary services (e.g., `unleash_nfts_service.get_collection_metrics` and `gemini_service.generate_summary`).
+6.  **Dynamic Collection Search:** For features like project summaries or setting price alerts, the bot first calls the `unleash_nfts_service.search_collection` function to find the best match for the user's query. This resolves a collection name (e.g., "Doodles") into its on-chain address and chain ID.
+7.  The handler then calls the necessary services (e.g., `unleash_nfts_service.get_collection_metrics`, `gemini_service.generate_summary`, or `db_manager.create_price_alert`).
 8.  The final response is sent back to the user via the Telegram API.
 
 ## 3. Key Technologies
@@ -34,4 +34,4 @@ The application is designed for deployment on Render using a `render.yaml` Bluep
 
 -   **Runtime**: The application runs in Render's native Python environment, not a Docker container.
 -   **Server**: It uses the `python-telegram-bot` library's own built-in webhook server, which proved more reliable than a Gunicorn/Uvicorn setup for this specific library.
--   **Scheduler**: Due to Render's free-tier limitations, scheduled tasks are handled by an external cron service (e.g., Cron-Job.org) that calls a secure webhook on the running web service. This triggers the scheduler logic.
+-   **Scheduler**: Due to Render's free-tier limitations, scheduled tasks are handled by an external cron service (e.g., Cron-Job.org) that calls a secure webhook on the running web service. This triggers the `check_price_alerts` function, which queries the database for active alerts, fetches live floor prices from the UnleashNFTs API, and sends notifications via the bot if an alert's conditions are met.

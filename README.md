@@ -6,7 +6,7 @@ Mira is a Telegram-based AI agent designed to provide real-time NFT alerts and c
 
 ## Features
 - **Natural Language Interaction**: Communicate with Mira using plain English.
-- **Custom NFT Price Alerts**: Set up alerts for when a collection's floor price goes above or below a certain threshold.
+- **Dynamic NFT Price Alerts**: Set up alerts for any NFT collection, and Mira will dynamically find it and track its floor price. Get notified when the price goes above or below your specified threshold.
 - **New Listing Alerts**: Get notified when new NFTs from a specific collection are listed on major marketplaces.
 - **In-Depth Summaries**: Get concise, AI-generated summaries of NFT projects.
 - **Wallet Activity Monitoring**: Track on-chain activity for any wallet address to monitor NFT transactions.
@@ -71,11 +71,14 @@ This project is configured for easy deployment on Render using the provided `ren
 
 Because Render's free tier does not support native cron jobs, a webhook is used to trigger the alert checker. You must use an external cron job service (like [Cron-Job.org](https://cron-job.org/)) to call this webhook periodically.
 
-1.  **Get your Webhook URL:** The URL is constructed from your service URL, your bot token, and the secret you defined.
+1.  **Construct your Webhook URL:** The full URL for the cron job to call is: `https://<your-render-app-url>/scheduler/<your-scheduler-secret>`
 2.  **Configure the External Cron Job:**
-    *   **URL:** `https://<your-render-app-url>/scheduler <your-scheduler-secret>`
+    *   Go to a service like [Cron-Job.org](https://cron-job.org/).
+    *   Create a new cron job.
+    *   **URL:** Paste the full webhook URL you constructed.
     *   **Schedule:** Every 15 minutes is recommended.
-    *   **Note:** The `CommandHandler` in the bot treats the secret as an argument passed after the command.
+    *   **HTTP Method:** GET
+    *   Save the cron job. The scheduler is now active.
 
 ## Technology Stack
 - **Backend**: Python (`python-telegram-bot`)

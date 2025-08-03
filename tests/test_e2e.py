@@ -84,7 +84,7 @@ async def test_e2e_summary_and_alert_flow(
 
     # Assert
     mock_classify_intent.assert_called_with(alert_input)
-    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you if punks goes above 60 ETH.")
+    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you if CryptoPunks goes above 60 ETH.")
 
     # --- 3. Verify alert is in the database ---
     db_user = await db_manager.get_or_create_user(123, "E2E_Test")
@@ -94,7 +94,7 @@ async def test_e2e_summary_and_alert_flow(
         alerts = result.scalars().all()
         assert len(alerts) == 1
         alert = alerts[0]
-        assert alert.collection_name == "punks"
+        assert alert.collection_name == "CryptoPunks"
         assert alert.threshold_price == 60
         assert alert.direction == "above"
 

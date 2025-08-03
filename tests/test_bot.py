@@ -36,25 +36,30 @@ async def test_start_command():
 
 
 @pytest.mark.asyncio
+@patch('src.bot.unleash_nfts_service.search_collection')
 @patch('src.bot.db_manager.create_price_alert')
 @patch('src.bot.db_manager.get_or_create_user')
 @patch('src.bot.classify_intent_and_extract_entities')
-async def test_handle_message_price_alert_intent(mock_classify_intent, mock_get_or_create_user, mock_create_price_alert):
+async def test_handle_message_price_alert_intent(mock_classify_intent, mock_get_or_create_user, mock_create_price_alert, mock_search_collection):
     """Test the full flow for a 'set_price_alert' intent."""
     # Arrange
     user_input = "alert me if doodles drops below 10 eth"
+    collection_name = "doodles"
     nlu_response = {
         "intent": "set_price_alert",
         "entities": {
-            "collection_name": "doodles",
+            "collection_name": collection_name,
             "threshold_price": 10,
             "direction": "below"
         },
         "confidence": 0.98
     }
+    search_response = {"metadata": {"name": "Doodles", "contract_address": "0x8a90CAb2b38dba80c64b7734e58Ee1dB38B8992e", "chain_id": "ethereum"}}
+    
     mock_classify_intent.return_value = nlu_response
     mock_get_or_create_user.return_value = User(id=1, telegram_user_id=123, first_name="Test")
-    mock_create_price_alert.return_value = None # We don't need the return value
+    mock_search_collection.return_value = search_response
+    mock_create_price_alert.return_value = None
 
     update = MagicMock(spec=Update)
     update.effective_user = TelegramUser(id=123, first_name="Test", is_bot=False)
@@ -70,10 +75,11 @@ async def test_handle_message_price_alert_intent(mock_classify_intent, mock_get_
     # Assert
     mock_classify_intent.assert_called_once_with(user_input)
     mock_get_or_create_user.assert_called_once()
+    mock_search_collection.assert_called_once_with(collection_name)
     mock_create_price_alert.assert_called_once()
     
     # Check that the confirmation message is sent
-    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you if doodles goes below 10 ETH.")
+    update.message.reply_text.assert_called_with("✅ Alert set! I'll notify you if Doodles goes below 10 ETH.")
 
 
 @pytest.mark.asyncio
