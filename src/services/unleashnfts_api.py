@@ -61,25 +61,28 @@ class UnleashNFTsService:
         """Search for a collection by name and return the best match."""
         endpoint = "/collections"
         params = {
-            "blockchain": 1,  # Default to Ethereum
-            "metrics": "volume_24h",
-            "sort_by": "volume_24h",
+            "chain_id": 1,  # Default to Ethereum
+            "metrics": "volume",
+            "sort_by": "volume",
             "sort_order": "desc",
-            "name": name.lower()
+            "time_range": "24h"
         }
         collections_data = await self._request("GET", endpoint, params=params)
 
         if not collections_data or not collections_data.get("collections"):
             return None
 
-        # Find the best match based on 24h volume, just in case the name search is not exact
-        best_match = max(
-            collections_data["collections"],
-            key=lambda c: c.get("metrics", {}).get("volume_24h", 0),
-            default=None,
-        )
+        # Find the best match by looking for an exact name match first
+        for collection in collections_data["collections"]:
+            if name.lower() == collection.get("name", "").lower():
+                return collection
 
-        return best_match
+        # If no exact match is found, look for a partial match
+        for collection in collections_data["collections"]:
+            if name.lower() in collection.get("name", "").lower():
+                return collection
+
+        return None
 
 # Instantiate the service
 unleash_nfts_service = UnleashNFTsService()
