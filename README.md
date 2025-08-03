@@ -6,7 +6,7 @@ Mira is a Telegram-based AI agent designed to provide real-time NFT alerts and c
 
 ## Features
 - **Natural Language Interaction**: Communicate with Mira using plain English.
-- **Dynamic NFT Price Alerts**: Set up alerts for any NFT collection, and Mira will dynamically find it and track its floor price. Get notified when the price goes above or below your specified threshold.
+- **Dynamic NFT Price Alerts**: Set up alerts for any NFT collection, and Mira will dynamically find it and track its floor price. Get notified when the price goes above or below your specified threshold. (Note: Collection search is dependent on the naming conventions of the UnleashNFTs API and may not find all collections.)
 - **New Listing Alerts**: Get notified when new NFTs from a specific collection are listed on major marketplaces.
 - **In-Depth Summaries**: Get concise, AI-generated summaries of NFT projects.
 - **Wallet Activity Monitoring**: Track on-chain activity for any wallet address to monitor NFT transactions.
