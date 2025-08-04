@@ -2,7 +2,9 @@
 
 # Mira - Your Personal AI Agent for NFT Alerts & Summaries
 
-Mira is a Telegram-based AI agent designed to provide real-time NFT alerts and comprehensive project summaries through natural language interaction. Powered by Google's Gemini 2.5 models and data from the UnleashNFTs API, Mira offers an intuitive, AI-first experience for NFT traders, collectors, and enthusiasts.
+**Built for the bitsCrunch x AI Builders Hack 2025**
+
+Mira is a Telegram-based AI agent designed to provide real-time NFT alerts and comprehensive project summaries through natural language interaction. Powered by Google's Gemini 2.5 models and data from the bitsCrunch (UnleashNFTs) API, Mira offers an intuitive, AI-first experience for NFT traders, collectors, and enthusiasts.
 
 ## Features
 - **Natural Language Interaction**: Communicate with Mira using plain English.
@@ -83,6 +85,9 @@ Because Render's free tier does not support native cron jobs, a webhook is used 
 ## Technology Stack
 - **Backend**: Python (`python-telegram-bot`)
 - **AI**: Google Gemini 2.5 Pro & Flash
-- **Data**: UnleashNFTs API
+- **Data**: bitsCrunch (UnleashNFTs) API
 - **Database**: PostgreSQL (on Render), SQLite (local)
 - **Hosting**: Render (Native Python Runtime)
+
+## Acknowledgements
+A special thank you to the bitsCrunch (UnleashNFTs) team for providing the robust API that powers Mira's data-driven features.
